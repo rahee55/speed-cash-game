@@ -8,14 +8,20 @@ export class MainScene extends Scene {
         super('MainScene');
     }
     preload() {
+
+        this.load.image("roadStart" , "images/road-start.jpg")
         
     }
 
     create() {      
 
-        let text = this.add.text(300 , 300, "Chupa ty la cha Zeba")
+        let text = this.add.text(300 , 300, "This is main Scene")
         .setColor("red")
         .setScale(2.5)
+
+        this.add.image(300, 500 , 'roadStart')
+
+        this.add.text(200, 300, " hello");
 
         this.add.tween({
             targets: text,

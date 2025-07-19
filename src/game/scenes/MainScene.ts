@@ -16,6 +16,8 @@ export class MainScene extends Scene
     OCblight: Phaser.GameObjects.Image;
     BSlight: Phaser.GameObjects.Image;
     OSlight: Phaser.GameObjects.Image;
+    busterb: Phaser.GameObjects.Image;
+    bustedo: Phaser.GameObjects.Image;
     roadStart: Phaser.GameObjects.Image;
     Road: Phaser.GameObjects.TileSprite;
     blueCar: { sprite: Phaser.GameObjects.Container, speed: number, active: boolean, multiplier: number };
@@ -46,6 +48,8 @@ export class MainScene extends Scene
         this.load.image("orangeCar-shadow", "images/bluecar-shadow.webp")
         this.load.image("orangeCar-shadow", "images/bluecar-shadow.webp")
         this.load.image("road", "images/road.jpg")
+        this.load.image("bustedB", "images/busted-blue.webp")
+        this.load.image("bustedO", "images/busted-orange.webp")
 
 
     }
@@ -55,8 +59,6 @@ export class MainScene extends Scene
 
         const width = this.cameras.main.width;
         const height = this.cameras.main.height;
-
-        // multipliers are now initialized in the object definition below
 
         this.BCshadow = this.add.image(-9, 0, "blueCar-shadow")
         this.BC = this.add.image(0, 0, "blueCar")
@@ -119,6 +121,11 @@ export class MainScene extends Scene
             repeat: -1
         })
 
+        this.busterb = this.add.image(500, 250, 'bustedB')
+        .setDepth(11).setVisible(false);
+        this.bustedo = this.add.image(900, 250, 'bustedO')
+        .setDepth(11).setVisible(false);
+
         this.Road = this.add.tileSprite(width / 1.568, -1700, width, height * 100, 'road')
             .setScale(1.4)
             .setDepth(7)
@@ -141,31 +148,31 @@ export class MainScene extends Scene
         this.scheduleCrash(this.blueCar);
         this.scheduleCrash(this.orangeCar);
 
-        this.blueMultiplierText = this.add.text(150, 100, 'x1.00', {
+        this.blueMultiplierText = this.add.text(100, 50, 'x1.00', {
             fontFamily: 'Arial',
-            fontSize: '48px',
-            color: '#00bfff',
+            fontSize: '51px',
+            color: '#2444ED',
             fontStyle: 'bold'
         }).setDepth(10);
 
-        this.orangeMultiplierText = this.add.text(650, 100, 'x1.00', {
+        this.orangeMultiplierText = this.add.text(1150, 50, 'x1.00', {
             fontFamily: 'Arial',
             fontSize: '48px',
-            color: '#ff8c00',
+            color: '#FA6714',
             fontStyle: 'bold'
         }).setDepth(10);
 
-        this.blueBustedText = this.add.text(this.blueMultiplierText.x, this.blueMultiplierText.y + 60, 'BUSTED', {
+        this.blueBustedText = this.add.text(this.busterb.x -70, this.busterb.y + 80, 'BUSTED!', {
             fontFamily: 'Arial',
             fontSize: '32px',
-            color: '#00bfff',
+            color: '#2444ED',
             fontStyle: 'bold'
         }).setDepth(10).setVisible(false);
 
-        this.orangeBustedText = this.add.text(this.orangeMultiplierText.x, this.orangeMultiplierText.y + 60, 'BUSTED', {
+        this.orangeBustedText = this.add.text(this.bustedo.x -70, this.bustedo.y + 80, 'BUSTED!', {
             fontFamily: 'Arial',
             fontSize: '32px',
-            color: '#ff8c00',
+            color: '#FA6714',
             fontStyle: 'bold'
         }).setDepth(10).setVisible(false);
 
@@ -175,7 +182,7 @@ export class MainScene extends Scene
     }
     scheduleCrash(car: { sprite: Phaser.GameObjects.Container, speed: number, active: boolean })
     {
-        const crashDelay = Phaser.Math.Between(4000, 10000);
+        const crashDelay = Phaser.Math.Between(4000, 30000);
         this.time.delayedCall(crashDelay, () =>
         {
             if (car.active)
@@ -205,10 +212,16 @@ export class MainScene extends Scene
         });
         if (car === this.blueCar)
         {
+            this.busterb.setVisible(true);
             this.blueBustedText.setVisible(true);
         } else if (car === this.orangeCar)
         {
+            this.bustedo.setVisible(true);
             this.orangeBustedText.setVisible(true);
+        }
+        if (car === this.blueCar && this.orangeCar) {
+            this.Road.destroy();
+            this.roadStart.destroy();
         }
         car.active = false;
         car.speed = 0;

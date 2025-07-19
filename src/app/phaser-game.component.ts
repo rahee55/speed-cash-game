@@ -17,23 +17,6 @@ export class PhaserGame implements OnInit
     ngOnInit ()
     {
         this.game = StartGame('game-container');
-
-        EventBus.on('current-scene-ready', (scene: Phaser.Scene) =>
-        {
-            this.scene = scene;
-
-            if (this.sceneCallback)
-            {
-                this.sceneCallback(scene);
-            }
-        });
     }
 
-    ngOnDestroy ()
-    {
-        if (this.game)
-        {
-            this.game.destroy(true);
-        }
-    }
 }

@@ -9,8 +9,7 @@ const config: Phaser.Types.Core.GameConfig = {
     type: AUTO,
     width: window.innerWidth,
     height: window.innerHeight,
-    parent: 'game-container',
-    backgroundColor: '#028af8',
+    backgroundColor: 'black',
     scene: [
         Boot,
         Preloader,
@@ -22,7 +21,7 @@ const config: Phaser.Types.Core.GameConfig = {
 
 const StartGame = (parent: string) => {
 
-    return new Game({ ...config, parent });
+    return new Game({ ...config });
 
 }
 
